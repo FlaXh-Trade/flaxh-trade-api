@@ -1,98 +1,311 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Flaxh Trade API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A robust NestJS-based REST API for Solana blockchain trading operations. This API provides comprehensive user management, wallet integration, and trading functionality on the Solana network.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Features
 
-## Description
+- **User Management**: Complete user registration, authentication, and profile management
+- **JWT Authentication**: Secure authentication with JWT tokens and refresh functionality
+- **Solana Integration**: Native Solana blockchain integration for wallet operations
+- **Wallet Management**: Create, manage, and track Solana wallets
+- **Transaction History**: Track and retrieve transaction history
+- **Token Balance Tracking**: Real-time token balance monitoring
+- **Database Integration**: PostgreSQL with TypeORM for data persistence
+- **Comprehensive Logging**: Winston-based logging system
+- **Security**: BCrypt password hashing, JWT guards, and validation
+- **API Versioning**: Versioned API endpoints for backwards compatibility
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠 Tech Stack
 
-## Project setup
+- **Framework**: NestJS
+- **Database**: PostgreSQL with TypeORM
+- **Blockchain**: Solana Web3.js & SPL Token
+- **Authentication**: JWT with Passport
+- **Validation**: Class Validator & Joi
+- **Logging**: Winston
+- **Package Manager**: pnpm
+- **Language**: TypeScript
+
+## 📋 Prerequisites
+
+- Node.js (v18 or higher)
+- PostgreSQL
+- pnpm
+- Solana CLI (optional, for development)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd flaxh-trade-api
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Environment Setup**
+   Create a `.env` file in the root directory:
+   ```bash
+   # Server Configuration
+   PORT=3000
+   NODE_ENV=development
+   API_PREFIX=api
+   API_VERSION=v1
+
+   # Database Configuration
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   DATABASE_USERNAME=postgres
+   DATABASE_PASSWORD=your_password
+   DATABASE_NAME=flaxh_trade
+
+   # JWT Configuration
+   JWT_SECRET=your-super-secret-jwt-key
+   JWT_EXPIRES_IN=7d
+
+   # Solana Configuration
+   SOLANA_RPC_URL=https://api.devnet.solana.com
+   SOLANA_NETWORK=devnet
+   SOLANA_PROGRAM_ID=your_program_id
+
+   # CORS Configuration
+   CORS_ORIGIN=http://localhost:3000
+
+   # Logging Configuration
+   LOG_LEVEL=info
+   LOG_FORMAT=json
+   ```
+
+4. **Database Setup**
+   ```bash
+   # Create database
+   createdb flaxh_trade
+   
+   # Run migrations (if any)
+   pnpm run migration:run
+   ```
+
+## 🚀 Running the Application
 
 ```bash
-$ pnpm install
+# Development mode
+pnpm run start:dev
+
+# Production mode
+pnpm run start:prod
+
+# Debug mode
+pnpm run start:debug
 ```
 
-## Compile and run the project
+The API will be available at `http://localhost:3000`
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:3000/api/v1
+```
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Register a new user |
+| POST | `/auth/login` | User login |
+| GET | `/auth/profile` | Get user profile (protected) |
+| POST | `/auth/refresh` | Refresh JWT token (protected) |
+
+### User Management Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/users` | Create a new user |
+| GET | `/users` | Get all users (paginated) |
+| GET | `/users/:id` | Get user by ID |
+| PUT | `/users/:id` | Update user |
+| DELETE | `/users/:id` | Delete user |
+| POST | `/users/verify-email/:token` | Verify email address |
+| POST | `/users/forgot-password` | Request password reset |
+| POST | `/users/reset-password/:token` | Reset password |
+
+### Wallet Management Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/wallets/user/:userId` | Create wallet for user |
+| GET | `/wallets/user/:userId` | Get user's wallets |
+| GET | `/wallets/:id` | Get wallet by ID |
+| GET | `/wallets/address/:address` | Get wallet by address |
+| PUT | `/wallets/:id` | Update wallet |
+| DELETE | `/wallets/:id` | Delete wallet |
+| POST | `/wallets/:id/update-balance` | Update wallet balance |
+| GET | `/wallets/:id/token-balance/:mintAddress` | Get token balance |
+| GET | `/wallets/:id/transactions` | Get transaction history |
+| POST | `/wallets/:id/verify` | Verify wallet |
+| POST | `/wallets/:id/activate` | Activate wallet |
+| POST | `/wallets/:id/deactivate` | Deactivate wallet |
+
+### Example Requests
+
+#### Register User
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securePassword123",
+    "firstName": "John",
+    "lastName": "Doe"
+  }'
+```
+
+#### Login
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securePassword123"
+  }'
+```
+
+#### Create Wallet (requires authentication)
+```bash
+curl -X POST http://localhost:3000/api/v1/wallets/user/USER_ID \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "name": "My Trading Wallet",
+    "publicKey": "SOLANA_PUBLIC_KEY"
+  }'
+```
+
+## 🧪 Testing
 
 ```bash
-# development
-$ pnpm run start
+# Unit tests
+pnpm run test
 
-# watch mode
-$ pnpm run start:dev
+# E2E tests
+pnpm run test:e2e
 
-# production mode
-$ pnpm run start:prod
+# Test coverage
+pnpm run test:cov
+
+# Watch mode
+pnpm run test:watch
 ```
 
-## Run tests
+## 🏗 Project Structure
 
+```
+src/
+├── app.module.ts              # Main application module
+├── main.ts                    # Application entry point
+├── audit/                     # Audit logging functionality
+├── common/                    # Shared utilities and components
+│   ├── decorators/           # Custom decorators
+│   ├── exceptions/           # Custom exceptions
+│   ├── filters/              # Exception filters
+│   ├── guards/               # Route guards
+│   ├── interceptors/         # Request/response interceptors
+│   ├── logger/               # Logging service
+│   ├── middleware/           # Custom middleware
+│   ├── pipes/                # Validation pipes
+│   └── utils/                # Utility functions
+├── config/                    # Configuration files
+├── database/                  # Database configuration and migrations
+├── infra/                     # Infrastructure services
+│   └── solana/               # Solana blockchain integration
+└── modules/                   # Feature modules
+    ├── auth/                 # Authentication module
+    ├── users/                # User management module
+    ├── wallets/              # Wallet management module
+    └── transactions/         # Transaction handling module
+```
+
+## 🔒 Security Features
+
+- **Password Hashing**: BCrypt for secure password storage
+- **JWT Authentication**: Stateless authentication with refresh tokens
+- **Input Validation**: Comprehensive validation using Class Validator
+- **CORS Protection**: Configurable CORS settings
+- **Rate Limiting**: Built-in protection against abuse
+- **Environment Variables**: Secure configuration management
+
+## 🌐 Solana Integration
+
+The API integrates with the Solana blockchain to provide:
+
+- Wallet creation and management
+- Token balance tracking
+- Transaction history retrieval
+- SPL token support
+- Network flexibility (devnet/mainnet)
+
+## 📝 Development
+
+### Code Style
 ```bash
-# unit tests
-$ pnpm run test
+# Format code
+pnpm run format
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# Lint code
+pnpm run lint
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### Database Migrations
 ```bash
-$ pnpm install -g mau
-$ mau deploy
+# Generate migration
+pnpm run migration:generate -- --name=MigrationName
+
+# Run migrations
+pnpm run migration:run
+
+# Revert migration
+pnpm run migration:revert
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🚀 Deployment
 
-## Resources
+### Environment Variables for Production
+Ensure all environment variables are properly set for production:
 
-Check out a few resources that may come in handy when working with NestJS:
+- Set `NODE_ENV=production`
+- Use strong `JWT_SECRET`
+- Configure production database credentials
+- Set appropriate `SOLANA_RPC_URL` for mainnet
+- Configure proper CORS origins
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Build for Production
+```bash
+pnpm run build
+pnpm run start:prod
+```
 
-## Support
+## 🤝 Contributing
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Stay in touch
+## 📄 License
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+This project is licensed under the UNLICENSED License.
 
-## License
+## 🔗 Related Resources
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- [NestJS Documentation](https://docs.nestjs.com)
+- [Solana Web3.js Documentation](https://solana-labs.github.io/solana-web3.js/)
+- [TypeORM Documentation](https://typeorm.io/)
+- [Solana Developer Documentation](https://docs.solana.com/)
+
+## 📞 Support
+
+For support and questions, please open an issue in the repository.
